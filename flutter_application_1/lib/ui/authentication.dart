@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/net/flutterfire.dart';
+import 'package:flutter_application_1/ui/home_view.dart';
 
 class Authentication extends StatefulWidget {
   Authentication({Key? key}) : super(key: key);
@@ -16,11 +18,14 @@ TextEditingController _passwordField = TextEditingController();
     return Scaffold(
       body:Container(
         width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(30),
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           color: Colors.blueAccent,
+          
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextFormField(
               controller: _emailField,
@@ -49,30 +54,55 @@ TextEditingController _passwordField = TextEditingController();
                 ),
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.4,
-              height: 45,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: Colors.white,
-              ),
-              child: MaterialButton(
-                onPressed: () {},
-                child: Text("Register"),
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.4,
-              height: 45,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: Colors.white,
-              ),
-              child: MaterialButton(
-                onPressed: () {},
-                child: Text("Log in"),
-              ),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 2.8,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white,
+                  ),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      bool navigate = await register(_emailField.text, _passwordField.text);
+                      if( navigate ){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => HomeView()
+                          ),
+                        );
+                      }
+                    },
+                    child: Text("Register"),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2.8,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white,
+                  ),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      bool navigate = await signIn(_emailField.text, _passwordField.text);
+                      if( navigate ){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => HomeView()
+                          ),
+                        );
+                      }
+                    },
+                    child: Text("Log in"),
+                  ),
+                ),
+              ],
+            )
           ]
         ),
       ),
